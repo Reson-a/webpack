@@ -17,7 +17,6 @@ if (!detector.webgl) document.getElementById('error-panel').style.display = 'blo
 else {
   window.THREE = require('@/libs/three.js').THREE
   if (CONFIG.isDebug) {
-    window.dat = require('@/libs/dat.gui.js').dat
     window.Stats = require('@/libs/stats.js').Stats
   }
   require('@/libs/FBXLoader.js')
