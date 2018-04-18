@@ -1,0 +1,36 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.f-fl {
+  float: left;
+}
+
+.f-fr {
+  float: right;
+}
+
+.clearfix::after {
+  content: '.';
+  display: block;
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+
+#error-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  color: red;
+  background-color: #ffffff;
+}
+
+#error-panel img {
+  max-width: 100%;
+}
