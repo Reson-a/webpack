@@ -16,10 +16,12 @@ if (!detector.webgl) document.getElementById('error-panel').style.display = 'blo
 
 else {
   window.THREE = require('@/libs/three.js').THREE
-  if (CONFIG.isDebug) window.dat = require('@/libs/dat.gui.min.js').dat
+  if (CONFIG.isDebug) {
+    window.dat = require('@/libs/dat.gui.js').dat
+    window.Stats = require('@/libs/stats.js').Stats
+  }
   require('@/libs/FBXLoader.js')
   require('@/libs/OrbitControls.js')
-  require('@/libs/RenderStats.js')
   require('@/libs/TweenLite.js')
 
   Vue.config.productionTip = false
