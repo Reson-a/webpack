@@ -15,13 +15,12 @@ const detector = require('@/libs/Detector.js')
 if (!detector.webgl) document.getElementById('error-panel').style.display = 'block'
 
 else {
-  window.THREE = require('@/libs/three.js').THREE
+  window.THREE = require('three')
   if (CONFIG.isDebug) {
     window.Stats = require('@/libs/stats.js').Stats
   }
   require('@/libs/FBXLoader.js')
   require('@/libs/OrbitControls.js')
-  require('@/libs/TweenLite.js')
 
   Vue.config.productionTip = false
   Vue.prototype.$eventHub = new Vue()
