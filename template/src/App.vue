@@ -7,21 +7,28 @@
     <HelloWorld/>
     {{/router}}
     <canvas id="canvas"></canvas>
+    <logo></logo>
+    <sound-player :sounds="sounds"></sound-player>
   </div>
 </template>
 
 <script>
 {{#unless router}}
-import HelloWorld from './components/HelloWorld'
+import Logo from '@/components/Logo.vue'
+import SoundPlayer from '@/components/SoundPlayer.vue'
 import * as Light from '@/js/lightUtils'
 import * as RaycastControl from '@/js/raycastControl'
 import * as Scene from '@/js/scene.js'
+
+const sounds = []
 
 {{/unless}}
 export default {
   name: 'App'{{#router}}{{else}},
   data () {
-    return {}
+    return {
+      sounds
+    }
   },
   mounted () {
     this.init()
@@ -42,7 +49,8 @@ export default {
     }
   },
   components: {
-    HelloWorld
+    Logo,
+    SoundPlayer
   }{{/router}}
 }
 </script>
