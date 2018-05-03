@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     {{#router}}
     <router-view/>
-    {{else}}
-    <HelloWorld/>
     {{/router}}
     <canvas id="canvas"></canvas>
     <logo></logo>
@@ -16,9 +13,9 @@
 {{#unless router}}
 import Logo from '@/components/Logo.vue'
 import SoundPlayer from '@/components/SoundPlayer.vue'
-import * as Light from '@/js/lightUtils'
-import * as RaycastControl from '@/js/raycastControl'
-import * as Scene from '@/js/scene.js'
+import LightUtil from '@/js/lightUtils'
+import RaycastControl from '@/js/raycastControl'
+import Scene from '@/js/scene.js'
 
 const sounds = []
 
@@ -35,14 +32,14 @@ export default {
   },
   methods: {
     init () {
-      Scene.init()
-      Scene.initControls()
-      Light.init()
-      RaycastControl.init()
+      let scene = this.scene = new Scene()
+      scene.initControl()
+      this.lightUtil = new LightUtil(scene)
+      this.raycastControl = new RaycastControl(scene)
 
       // 渲染场景
       const renderScene = () => {
-        Scene.update()
+        this.scene.update()
         requestAnimationFrame(renderScene)
       }
       renderScene()
