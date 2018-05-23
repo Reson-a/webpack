@@ -210,8 +210,6 @@ export default class Scene {
 
   /**
    * 获取定位的屏幕坐标
-   * @param mesh
-   * @returns {{ x: number, y: number }}
    */
   getScreenPoint (mesh) {
     let v3 = new THREE.Vector3().applyMatrix4(mesh.matrixWorld).project(this.camera)
