@@ -1,10 +1,16 @@
 /* global THREE */
 import CONFIG from '@/js/config'
 
+// const defaultCameraPos = {
+//   x: 20,
+//   y: 20,
+//   z: 20
+// }
+
 const defaultCameraPos = {
   x: 100,
   y: 100,
-  z: 120
+  z: 100
 }
 
 /**
@@ -16,10 +22,15 @@ const defaultCameraPos = {
 
 export default class Scene {
   constructor (options = {}) {
+    this.offsetX = options.offsetX || 0
+    this.offsetY = options.offsetY || 0
+    this.perOffsetX = options.perOffsetX || 0
+    this.perOffsetY = options.perOffsetY || 0
     this.perWidth = options.perWidth || 1
     this.perHeight = options.perHeight || 1
     this.domElement = options.domElement || document.getElementById('canvas')
     this.cameraPos = options.cameraPos || new THREE.Vector3(defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z)
+    this.name = options.name || this.domElement.id
     this._init()
   }
   // 初始化
@@ -30,9 +41,9 @@ export default class Scene {
   // 初始化场景
   _initScene () {
     // 窗口宽
-    let width = this.width = window.innerWidth * this.perWidth
+    let width = this.width = window.innerWidth * this.perWidth - Math.abs(this.offsetX)
     // 窗口高
-    let height = this.height = window.innerHeight * this.perHeight
+    let height = this.height = window.innerHeight * this.perHeight - Math.abs(this.offsetY)
     // 场景
     let scene = this.scene = new THREE.Scene()
 
@@ -46,21 +57,24 @@ export default class Scene {
       canvas: this.domElement,
       alpha: true,
       antialias: true,
-      logarithmicDepthBuffer: true
+      logarithmicDepthBuffer: true,
+      preserveDrawingBuffer: true
     })
     renderer.setClearColor(0xff0000, 0)
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setSize(width, height)
 
-    this._modelContainer = new THREE.Object3D()
-    scene.add(this._modelContainer)
+    this.modelContainer = new THREE.Object3D()
+    scene.add(this.modelContainer)
 
-    this._lightContainer = new THREE.Object3D()
-    scene.add(this._lightContainer)
+    this.lightContainer = new THREE.Object3D()
+    scene.add(this.lightContainer)
 
     if (CONFIG.isDebug) { // 坐标轴 方便调试
-      let axes = new THREE.AxesHelper(40)
-      scene.add(axes)
+      // let axes = new THREE.AxesHelper(80)
+      // scene.add(axes)
+      // let gridHelper = new THREE.GridHelper(100, 10)
+      // scene.add(gridHelper)
     }
   }
   /**
@@ -76,9 +90,9 @@ export default class Scene {
    */
   _onWindowResize () {
     // 窗口宽
-    let width = this.width = window.width * this.perWidth
+    let width = this.width = window.innerWidth * this.perWidth - Math.abs(this.offsetX)
     // 窗口高
-    let height = this.height = window.height * this.perHeight
+    let height = this.height = window.innerHeight * this.perHeight - -Math.abs(this.offsetY)
     this.camera.aspect = width / height
     this.camera.updateProjectionMatrix()
 
@@ -86,7 +100,7 @@ export default class Scene {
   }
   // 重置
   reset () {
-    this.camera.position = this.cameraPos.copy()
+    this.camera.position.copy(this.cameraPos)
     this.camera.lookAt(this.scene.position)
     this.resetControl()
   }
@@ -101,14 +115,15 @@ export default class Scene {
   initControl () {
     if (!this.control) {
       // 控制器
-      let controls = this.control = new THREE.OrbitControls(this.camera, this._renderer.domElement)
-      controls.target.set(0, 0, 0)
-      // control.enablePan = false
+      let control = this.control = new THREE.OrbitControls(this.camera, this._renderer.domElement)
+      control.target.set(0, 0, 0)
+      control.enablePan = false
       // control.enab.1leDamping = false;
       // control.enableZoom = false;
-      controls.maxDistance = 200
-      controls.minDistance = 100
-      controls.update()
+
+      control.maxDistance = 300
+      control.minDistance = 100
+      control.update()
     }
   }
 
@@ -169,16 +184,16 @@ export default class Scene {
    * 添加模型
    * @param mesh
    */
-  addModel (model) {
-    this._modelContainer.add(model)
+  addModel (...models) {
+    this.modelContainer.add(...models)
   }
 
   /**
    * 删除模型
    * @param child
    */
-  removeModel (model) {
-    this._modelContainer.remove(model)
+  removeModel (...models) {
+    this.modelContainer.remove(...models)
   }
 
   /**
@@ -186,10 +201,25 @@ export default class Scene {
    */
   removeAllModels () {
     let child
-    let children = this._modelContainer.children
+    let children = this.modelContainer.children
     while (children.length) {
       child = children[0]
-      this._modelContainer.remove(child)
+      this.modelContainer.remove(child)
+    }
+  }
+
+  /**
+   * 获取定位的屏幕坐标
+   * @param mesh
+   * @returns {{x: number, y: number}}
+   */
+  getScreenPoint (mesh) {
+    let v3 = new THREE.Vector3().applyMatrix4(mesh.matrixWorld).project(this.camera)
+    let halfWidth = this.width / 2
+    let halfHeight = this.height / 2
+    return {
+      x: Math.round(v3.x * halfWidth + halfWidth + this.offsetX),
+      y: Math.round(-v3.y * halfHeight + halfHeight + this.offsetY)
     }
   }
 }
