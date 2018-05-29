@@ -14,9 +14,12 @@
 {{#unless router}}
 import Logo from '@/components/Logo.vue'
 import SoundPlayer from '@/components/SoundPlayer.vue'
+import IconButton from '@/components/IconButton.vue'
+import ModelLoader from '@/components/ModelLoader.vue'
 import LightUtil from '@/js/lightUtils'
 import RaycastControl from '@/js/raycastControl'
 import Scene from '@/js/scene.js'
+// import ModelManager from '@/js/modelManager.js'
 
 const sounds = []
 
@@ -48,7 +51,9 @@ export default {
   },
   components: {
     Logo,
-    SoundPlayer
+    SoundPlayer,
+    IconButton,
+    ModelLoader
   }{{/router}}
 }
 </script>
