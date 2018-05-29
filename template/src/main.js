@@ -17,9 +17,6 @@ if (!detector.webgl) document.getElementById('error-panel').style.display = 'blo
 
 else {
   window.THREE = require('three')
-  if (CONFIG.isDebug) {
-    window.Stats = require('@/libs/stats.js').Stats
-  }
   require('@/libs/FBXLoader.js')
   require('@/libs/OrbitControls.js')
 

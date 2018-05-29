@@ -54,10 +54,13 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "PingFang-SC-Regular", "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #424242;
+  background: #d4e0e0 url(assets/images/bg1@2x.jpg) 50% / cover no-repeat;
+  width: 100vw;
+  height: 100vh;
 }
 </style>

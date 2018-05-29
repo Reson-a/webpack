@@ -75,6 +75,8 @@ export default class Scene {
       // scene.add(axes)
       // let gridHelper = new THREE.GridHelper(100, 10)
       // scene.add(gridHelper)
+      this.initStats()
+      console.log(renderer.info)
     }
   }
   /**
@@ -83,6 +85,20 @@ export default class Scene {
   _initListeners () {
     // 缩放
     window.addEventListener('resize', this._onWindowResize.bind(this), false)
+  }
+
+  initStats () {
+    const Stats = require('@/libs/stats.js').Stats
+    let stats = this.stats = new Stats()
+
+    stats.setMode(0) // 0: fps, 1: ms
+    stats.domElement.style.position = 'absolute'
+    stats.domElement.style.top = ''
+    stats.domElement.style.right = '0px'
+    stats.domElement.style.bottom = '0px'
+    stats.domElement.style.left = ''
+    document.body.appendChild(stats.domElement)
+    return stats
   }
 
   /**
@@ -108,6 +124,7 @@ export default class Scene {
   update () {
     this._renderer.render(this.scene, this.camera)
     this.control && this.control.update()
+    this.stats && this.stats.update()
   }
   /**
    * 初始化控制器
