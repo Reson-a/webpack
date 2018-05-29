@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <model-loader @loading-completed="init"></model-loader>
     {{#router}}
     <router-view/>
     {{/router}}
@@ -28,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    this.init()
+    // this.init()
   },
   methods: {
     init () {

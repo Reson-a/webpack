@@ -4,7 +4,7 @@
 {{/if_eq}}
 import Vue from 'vue'
 import App from './App'
-import CONFIG from '@/js/config'
+// import CONFIG from '@/js/config'
 {{#router}}
 import router from './router'
 {{/router}}
